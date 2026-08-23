@@ -30,8 +30,8 @@
   let (height, space) = layouts.at(layout)
   let width = ratio * height
 
-  if count not in (none, "dot", "number", "dot-section") {
-    panic("Unknown Count, valid counts are 'dot', 'dot-section' and 'number', or none")
+  if count not in (none, "dot", "number", "dot-section", "number-short") {
+    panic("Unknown Count, valid counts are 'dot', 'dot-section' and 'number', 'number-short', or none")
   }
 
   if theme not in ("normal", "full") {
@@ -248,7 +248,18 @@
         set text(fill: title-color) if theme == "normal"
         [#current / #last]
       }
-    } 
+    } else if count == "number-short" {
+      v(-space / 1.5)
+      set align(right + top)
+      context {
+        let last = counter(page).final().first()
+        let current = here().page()
+        set text(weight: "bold")
+        set text(fill: white) if theme == "full"
+        set text(fill: title-color) if theme == "normal"
+        [#current]
+      }
+    }
     ],
     header-ascent: 0%,
   // FOOTER ----------------------------------------------------
