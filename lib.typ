@@ -19,6 +19,7 @@
   bg-color: white,
   count: "dot",
   footer: true,
+  footer-progress: false,
   toc: true,
   theme: "normal",
 ) = {
@@ -306,9 +307,21 @@
         }
         // Normal Styling of the Footer
         else if (theme == "normal") {
+          if (footer-progress) {
+            context {
+              let last = counter(page).final().first()
+              let current = here().page()
+              box()[#line(length: (current / last) * 100%, stroke: 2pt + fill-color)]
+              box()[#line(length: (1 - current / last) * 100%, stroke: 2pt + body-color)]
+            }
+          } else {
+            box()[#line(length: 50%, stroke: 2pt + fill-color)]
+            box()[#line(length: 50%, stroke: 2pt + body-color)]
+          }
 
-          box()[#line(length: 50%, stroke: 2pt+fill-color )]
-          box()[#line(length: 50%, stroke: 2pt+body-color)]
+          // move bar downwards if there is no footer text
+          if (footer-title == "" and footer-subtitle == "") { space *= 1.5 }
+          
           v(-0.33cm)
           grid(
             columns: (1fr, 1fr),
